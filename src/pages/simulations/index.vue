@@ -19,7 +19,7 @@ const headers: Record<string, any>[] = [
       <v-divider class="ml-2" vertical></v-divider>
       <v-spacer></v-spacer>
       <v-col class="d-flex justify-end">
-        <v-btn>Generar</v-btn>
+        <v-btn :to="{ path: 'new'}">Generar</v-btn>
       </v-col>
     </v-row>
     <v-row>

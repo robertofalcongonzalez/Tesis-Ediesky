@@ -35,7 +35,7 @@ async function parseResponse<T>(res: Response) {
   const {complete, error, ...data} = res.status !== 204 ? await res.json() : {complete: true, error: {message: null}};
 
   if (!complete) throw new Error(error.message);
-  return data as T;
+  return {...data, complete} as T;
 }
 
 export function request<T>(path: string, options: FetchOptions = {} as FetchOptions) {
@@ -62,7 +62,7 @@ export function request<T>(path: string, options: FetchOptions = {} as FetchOpti
   };
   if (useAuth) {
     const authStore = useAuthStore()
-    const token = authStore.getters.getToken;
+    const token = authStore.getToken;
     Object.assign(reqOptions, token && {Authorization: `Bearer ${token}`})
   }
   if (body) {

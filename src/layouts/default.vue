@@ -2,10 +2,14 @@
   <v-app>
     <AppSidebar/>
     <v-main>
-      <router-view />
+      <v-card tile flat class="fill-height">
+        <v-card-text>
+        <router-view />
+      </v-card-text>
+      </v-card>
     </v-main>
 
-    <AppFooter />
+<!--    <AppFooter />-->
   </v-app>
 </template>
 
