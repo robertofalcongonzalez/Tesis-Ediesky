@@ -19,7 +19,9 @@ const rules = ref({
 const useAuth = useAuthData();
 const useUser = useUserData();
 const userStore = useUserStore();
-
+if(localStorage.getItem('token')){
+  localStorage.removeItem('token')
+}
 const {sendRegister, sendLogin} = useAuth;
 const {getActors, searchTypeActorByActorId, typeActorArray} = useUser;
 await getActors();
