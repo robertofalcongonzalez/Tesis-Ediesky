@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import {definePage} from "unplugin-vue-router/runtime";
-import {LoginData, RegisterData} from "@/services/auth/types";
-import {login, register} from "@/services/auth/auth-service"
-import {Ref} from "vue";
+import {useAuthData} from "@/composables/useAuthData";
+import {useUserData} from "@/composables/useUserData";
+import {useUserStore} from "@/stores/user";
 
-const router = useRouter();
-const isRegister = ref(false)
 const isRegisterValid = ref(false);
 const isLoginValid = ref(false);
 const rules = ref({
@@ -18,44 +16,20 @@ const rules = ref({
     (v: string) => v.length >= 1 || 'Contraseña debe ser de mas de 1 caracteres',
   ],
 });
-const registerObject: Ref<RegisterData> = ref({
-  email: '',
-  first_name: '',
-  last_name: '',
-  password: '',
-  username: '',
-  ci: ''
-});
-const loginObject: Ref<LoginData> = ref({
-  email: '',
-  password: ''
-});
-const sendRegister = async () => {
-  const dataToSend = unref(registerObject);
-  const complete = await register(dataToSend);
-  if (complete) {
-    registerObject.value = {
-      email: '',
-      first_name: '',
-      last_name: '',
-      password: '',
-      username: '',
-      ci: ''
-    }
-    isRegister.value = false;
-  }
-};
-const sendLogin = async () => {
-  const dataToSend = unref(loginObject);
-  const complete = await login(dataToSend);
-  if (complete) {
-    loginObject.value = {
-      email: '',
-      password: '',
-    }
-    router.push('/Simulations');
-  }
-};
+const useAuth = useAuthData();
+const useUser = useUserData();
+const userStore = useUserStore();
+
+const {sendRegister, sendLogin} = useAuth;
+const {getActors, searchTypeActorByActorId, typeActorArray} = useUser;
+await getActors();
+const {loginRow, registerRow, isRegister} = useAuth;
+registerRow.value.economic_actor = userStore.economicActors[0].id;
+registerRow.value.type_actor = typeActorArray.value[0].id;
+const economicActorChanged = (value: number | string) => {
+  typeActorArray.value = userStore.economicActors[searchTypeActorByActorId(value)].type_actor
+  registerRow.value.type_actor = typeActorArray.value[0].id;
+}
 definePage({
   meta: {
     layout: 'noLayout'
@@ -71,39 +45,63 @@ definePage({
           <v-row>
             <v-col>
               <v-text-field
-                :rules="[(v)=> (!!v && v.length <= 150) || 'El nombre de usuario tiene que tener menos de 150 caracteres']"
-                v-model:model-value="registerObject.username" label="Nombre de Usuario"></v-text-field>
+                :rules="[(v)=> (v !== undefined && v.length <= 150) || 'El nombre de usuario tiene que tener menos de 150 caracteres']"
+                v-model:model-value="registerRow.username" label="Nombre de Usuario"></v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col>
               <v-text-field
-                :rules="[(v)=> (!!v && v.length <= 150) || 'El nombre tiene que tener menos de 150 caracteres']"
-                v-model:model-value="registerObject.first_name" label="Nombre"></v-text-field>
+                :rules="[(v)=> (v !== undefined && v.length <= 150) || 'El nombre tiene que tener menos de 150 caracteres']"
+                v-model:model-value="registerRow.first_name" label="Nombre"></v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col>
               <v-text-field
-                :rules="[(v)=> (!!v && v.length <= 150) || 'Los apellidos tiene que tener menos de 150 caracteres']"
-                v-model:model-value="registerObject.last_name" label="Apellidos"></v-text-field>
+                :rules="[(v)=> (v !== undefined && v.length <= 150) || 'Los apellidos tiene que tener menos de 150 caracteres']"
+                v-model:model-value="registerRow.last_name" label="Apellidos"></v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col>
-              <v-text-field :rules="[(v)=> (!!v && v.length === 11) || 'El CI tiene que tener 11 caracteres']"
-                            v-model:model-value="registerObject.ci" label="CI"></v-text-field>
+              <v-text-field
+                :rules="[(v)=> (!!v ? /^[0-9]{11}$/.test(v) : true)  || 'El Carnét de Identidad tiene que tener 11 caracteres']"
+                v-model:model-value="registerRow.ci" type="number" min="0" step="1"
+                label="Carnét de Identidad"></v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col>
-              <v-text-field :rules="rules.email" v-model:model-value="registerObject.email"
-                            label="Correo"></v-text-field>
+              <v-select v-if="registerRow.economic_actor"
+                        :rules="[(v)=> !!v   || 'El Actor Económico es Requerido']"
+                        :items="userStore.economicActors"
+                        item-title="name"
+                        @update:modelValue="economicActorChanged"
+                        item-value="id"
+                        v-model:model-value="registerRow.economic_actor"
+                        label="Actor Económico"></v-select>
+            </v-col>
+            <v-col>
+              <v-select
+                :rules="[(v)=> !!v   || 'El Tipo de Actor Económico es Requerido']"
+                :items="typeActorArray"
+                item-title="name"
+                item-value="id"
+                v-model:model-value="registerRow.type_actor"
+                label="Tipo de Actor Económico"></v-select>
             </v-col>
           </v-row>
           <v-row>
             <v-col>
-              <v-text-field :rules="rules.password" v-model:model-value="registerObject.password" label="Contraseña"
+              <v-text-field :rules="rules.email" autocomplete="username" v-model:model-value="registerRow.email"
+                            label="Correo*"></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-text-field :rules="rules.password" autocomplete="password"
+                            v-model:model-value="registerRow.password" label="Contraseña*"
                             type="password"></v-text-field>
             </v-col>
           </v-row>
@@ -122,12 +120,12 @@ definePage({
         <v-form v-model:model-value="isLoginValid">
           <v-row>
             <v-col>
-              <v-text-field :rules="rules.email" v-model:model-value="loginObject.email" label="Correo"></v-text-field>
+              <v-text-field :rules="rules.email" v-model:model-value="loginRow.email" label="Correo"></v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col>
-              <v-text-field :rules="rules.password" v-model:model-value="loginObject.password" label="Contraseña"
+              <v-text-field :rules="rules.password" v-model:model-value="loginRow.password" label="Contraseña"
                             type="password"></v-text-field>
             </v-col>
           </v-row>
@@ -145,7 +143,6 @@ definePage({
 
       </v-card-text>
     </v-card>
-
   </v-container>
 </template>
 

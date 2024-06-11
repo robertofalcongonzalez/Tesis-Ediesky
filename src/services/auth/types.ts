@@ -25,4 +25,6 @@ export interface RegisterData extends LoginData {
   first_name: string;
   last_name: string;
   ci: string
+  economic_actor: string | number
+  type_actor: string| number
 }

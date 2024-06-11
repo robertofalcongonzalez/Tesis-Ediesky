@@ -21,8 +21,8 @@ export const login = async (body: LoginData) => {
   const authStore = useAuthStore();
   authStore.saveToken(token);
   authStore.saveLoggedUser(user_id);
-  localStorage.setItem('token', authStore.getters.getToken)
-  localStorage.setItem('userId', authStore.getters.getLoggedUser)
+  localStorage.setItem('token', unref(authStore.getToken))
+  localStorage.setItem('userId', `${unref(authStore.getLoggedUser)}`)
   return complete;
 }
 
