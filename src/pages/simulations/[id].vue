@@ -1,21 +1,30 @@
 <script setup lang="ts">
-const sendData = ref({})
+import {useSimulationData} from "@/composables/useSimulationData";
+import {useSimulationStore} from "@/stores/simulation";
+import {Ref} from "vue";
+
 const route = useRoute();
+const router = useRouter();
 const isReadyToSend = ref(false);
-const tableValues = ref<Record<string, number>[]>([
-  {income: 0, expenses: 0, taxes: 0},
-  {income: 0, expenses: 0, taxes: 0},
-  {income: 0, expenses: 0, taxes: 0},
-  {income: 0, expenses: 0, taxes: 0},
-  {income: 0, expenses: 0, taxes: 0},
-  {income: 0, expenses: 0, taxes: 0},
-])
-const verticalHeaders = ref({
+const simulationsData = useSimulationData()
+onMounted(async () => await simulationsData.getTypeInversion())
+const simulationsStore = useSimulationStore()
+const verticalHeaders: Ref<{
+  income: 'Ingresos',
+  expenses: 'Gastos',
+  taxes: 'Impuestos',
+}> = ref({
   income: 'Ingresos',
   expenses: 'Gastos',
   taxes: 'Impuestos',
 })
 const isReadOnly = ((route.params as Record<string, any>).id as string) !== 'new';
+const sendSimulation = async () => {
+  const saved = await simulationsData.sendSaveSimulation(simulationsStore.toSaveSimulation);
+  if (saved) {
+    router.replace('/simulations');
+  }
+}
 </script>
 
 <template>
@@ -24,22 +33,30 @@ const isReadOnly = ((route.params as Record<string, any>).id as string) !== 'new
       <h1 class="ma-auto ml-3">Generar Simulación</h1>
       <v-divider class="ml-2" vertical></v-divider>
       <v-col>
-        <v-text-field
+        <v-text-field :readonly="isReadOnly"
           :rules="[(v)=> (!!v && v.length <= 15) || 'Requerido']"
-          v-model:model-value="sendData" type="number" label="Monto a pedir*"></v-text-field>
+          v-model:model-value="simulationsStore.toSaveSimulation.amount" type="number"
+          label="Monto a pedir*"></v-text-field>
       </v-col>
       <v-col>
-        <v-text-field
-          :rules="[(v)=> (!!v && v > 0 && v <= 120) || 'Requerido']"
-          v-model:model-value="sendData" type="number" label="Tiempo Estimado de Pago(Meses)*"></v-text-field>
+        <v-text-field :readonly="isReadOnly"
+          :rules="[(v)=> (!!v && v >= 3 && v <= 120) || 'Requerido']"
+          v-model:model-value="simulationsStore.toSaveSimulation.duration" type="number" min="3" step="1"
+          label="Tiempo Estimado de Pago(Meses)*"></v-text-field>
       </v-col>
-      <v-col>
-        <v-text-field
-          :rules="[(v)=> (!!v) || 'Requerido']"
-          v-model:model-value="sendData" label="Tipo de Crédito*"></v-text-field>
+      <v-col v-if="simulationsStore.typeInversions.length">
+        <v-select item-title="name"
+                  :rules="[(v)=> (!!v) || 'Requerido']"
+                  :items="simulationsStore.typeInversions"
+                  item-value="id" :readonly="isReadOnly"
+                  item-text="name"
+                  v-model:model-value="simulationsStore.toSaveSimulation.type_inversion"
+                  label="Tipo de Crédito*"></v-select>
       </v-col>
       <v-col class="d-flex justify-end">
-        <v-btn color="success" :disabled="!isReadyToSend" v-if="!isReadOnly">Generar</v-btn>
+        <v-btn color="success" :disabled="!isReadyToSend" @click="sendSimulation"
+               v-if="!isReadOnly">Generar
+        </v-btn>
       </v-col>
     </v-row>
     <v-row>
@@ -62,8 +79,8 @@ const isReadOnly = ((route.params as Record<string, any>).id as string) !== 'new
               >
                 <td>{{ value }}</td>
                 <td v-for="index in 6" :key="index">
-                  <v-text-field :rules="[(v)=> !!v || 'Requerido']"
-                                v-model:model-value="tableValues[index - 1][key]"></v-text-field>
+                  <v-text-field :rules="[(v)=> !!v || 'Requerido']" :readonly="isReadOnly"
+                                v-model:model-value="simulationsStore.toSaveSimulation.payment_capacity[index - 1][key]"></v-text-field>
                 </td>
               </tr>
               </tbody>
