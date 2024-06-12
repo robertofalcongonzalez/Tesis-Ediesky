@@ -21,10 +21,9 @@ export interface RegisterResponse {
 }
 
 export interface RegisterData extends LoginData {
-  username: string;
   first_name: string;
   last_name: string;
   ci: string
   economic_actor: string | number
-  type_actor: string| number
+  type_actor?: string | number
 }

@@ -47,13 +47,6 @@ definePage({
           <v-row>
             <v-col>
               <v-text-field
-                :rules="[(v)=> (v !== undefined && v.length <= 150) || 'El nombre de usuario tiene que tener menos de 150 caracteres']"
-                v-model:model-value="registerRow.username" label="Nombre de Usuario"></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-text-field
                 :rules="[(v)=> (v !== undefined && v.length <= 150) || 'El nombre tiene que tener menos de 150 caracteres']"
                 v-model:model-value="registerRow.first_name" label="Nombre"></v-text-field>
             </v-col>
@@ -96,7 +89,7 @@ definePage({
           </v-row>
           <v-row>
             <v-col>
-              <v-text-field :rules="rules.email" autocomplete="username" v-model:model-value="registerRow.email"
+              <v-text-field :rules="rules.email" autocomplete="email" v-model:model-value="registerRow.email"
                             label="Correo*"></v-text-field>
             </v-col>
           </v-row>
