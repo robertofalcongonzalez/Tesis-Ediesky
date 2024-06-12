@@ -17,7 +17,6 @@ export function useAuthData() {
     first_name: '',
     last_name: '',
     password: '',
-    username: '',
     ci: '',
     economic_actor: '',
     type_actor: ''
@@ -42,6 +41,6 @@ export function useAuthData() {
       router.push('/');
     }
   };
-  const setEActor = (eA: number | string)=> registerObject.value.economic_actor = eA;
+  const setEActor = (eA: number | string) => registerObject.value.economic_actor = eA;
   return {sendRegister, sendLogin, registerRow: registerObject, loginRow: loginObject, isRegister, setEActor}
 }

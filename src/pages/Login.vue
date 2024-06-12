@@ -19,7 +19,7 @@ const rules = ref({
 const useAuth = useAuthData();
 const useUser = useUserData();
 const userStore = useUserStore();
-if(localStorage.getItem('token')){
+if (localStorage.getItem('token')) {
   localStorage.removeItem('token')
 }
 const {sendRegister, sendLogin} = useAuth;
@@ -44,13 +44,6 @@ definePage({
       <v-card-title>Registrar</v-card-title>
       <v-card-text>
         <v-form v-model:model-value="isRegisterValid">
-          <v-row>
-            <v-col>
-              <v-text-field
-                :rules="[(v)=> (v !== undefined && v.length <= 150) || 'El nombre de usuario tiene que tener menos de 150 caracteres']"
-                v-model:model-value="registerRow.username" label="Nombre de Usuario"></v-text-field>
-            </v-col>
-          </v-row>
           <v-row>
             <v-col>
               <v-text-field
@@ -96,7 +89,7 @@ definePage({
           </v-row>
           <v-row>
             <v-col>
-              <v-text-field :rules="rules.email" autocomplete="username" v-model:model-value="registerRow.email"
+              <v-text-field :rules="rules.email" autocomplete="email" v-model:model-value="registerRow.email"
                             label="Correo*"></v-text-field>
             </v-col>
           </v-row>
