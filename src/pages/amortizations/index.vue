@@ -1,14 +1,26 @@
 <script setup lang="ts">
+import {useAmortizationData} from "@/composables/useAmortizationData";
+import {useAmortizationStore} from "@/stores/amortization";
+import router from "@/router";
+
+const amortizationData = useAmortizationData()
+onMounted(async () => {
+  await amortizationData.getAmortizations()
+})
+const amortizationStore = useAmortizationStore()
 const headers: Record<string, any>[] = [
   {
     align: 'start',
     key: 'id',
     title: 'ID',
   },
-  {key: 'calories', title: 'Simulación'},
-  {key: 'fat', title: 'Fecha'},
-  {key: 'actions', title: 'Accion'},
+  {key: 'simulation', title: 'Simulación'},
+  {key: 'duration', title: 'Duracion(meses)'},
+  {key: 'actions', title: 'Acciones'},
 ]
+const showDetails = (item: any) => {
+  amortizationData.mapToDetails(unref(item))
+}
 </script>
 
 <template>
@@ -20,9 +32,9 @@ const headers: Record<string, any>[] = [
     </v-row>
     <v-row>
       <v-col>
-        <v-data-table :headers="headers">
+        <v-data-table :items="amortizationStore.amortizations" :headers="headers">
           <template v-slot:[`item.actions`]="{ item }">
-            <v-btn color="info" :to="{path: `/${item.id}`}">Detalles</v-btn>
+            <v-btn color="info" :to="`${item.id}`" @click="showDetails(item)">Detalles</v-btn>
           </template>
         </v-data-table>
       </v-col>

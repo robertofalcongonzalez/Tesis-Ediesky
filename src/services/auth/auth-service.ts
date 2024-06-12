@@ -1,7 +1,5 @@
 import {request} from "@/services/base";
 import {LoginData, LoginResponse, RegisterData, RegisterResponse} from "@/services/auth/types";
-import {useAuthStore} from "@/stores/auth";
-
 
 
 export const register = async (body: RegisterData) => {
@@ -18,11 +16,8 @@ export const login = async (body: LoginData) => {
     method: 'POST',
     body
   })
-  const authStore = useAuthStore();
-  authStore.saveToken(token);
-  authStore.saveLoggedUser(user_id);
-  localStorage.setItem('token', unref(authStore.getToken))
-  localStorage.setItem('userId', `${unref(authStore.getLoggedUser)}`)
+  localStorage.setItem('token', token)
+  localStorage.setItem('userId', `${user_id}`)
   return complete;
 }
 

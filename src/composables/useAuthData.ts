@@ -39,7 +39,7 @@ export function useAuthData() {
     const complete = await login(dataToSend);
     if (complete) {
       cleanState<LoginData>(loginObject);
-      router.push('/');
+      router.push('/simulations/');
     }
   };
   const setEActor = (eA: number | string)=> registerObject.value.economic_actor = eA;

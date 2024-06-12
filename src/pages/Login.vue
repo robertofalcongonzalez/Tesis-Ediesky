@@ -19,7 +19,7 @@ const rules = ref({
 const useAuth = useAuthData();
 const useUser = useUserData();
 const userStore = useUserStore();
-if(localStorage.getItem('token')){
+if (localStorage.getItem('token')) {
   localStorage.removeItem('token')
 }
 const {sendRegister, sendLogin} = useAuth;
@@ -109,7 +109,10 @@ definePage({
           </v-row>
           <v-row justify="center">
             <v-col cols="auto">
-              <v-btn @click="sendRegister" :disabled="!isRegisterValid" class="ml-6">Registrar</v-btn>
+              <v-btn class="ml-6" color="info" @click="isRegister = false">Atrás</v-btn>
+            </v-col>
+            <v-col cols="auto">
+              <v-btn @click="sendRegister" color="success" :disabled="!isRegisterValid" class="ml-6">Registrar</v-btn>
             </v-col>
           </v-row>
         </v-form>
@@ -133,13 +136,13 @@ definePage({
           </v-row>
         </v-form>
         <v-row justify="space-around">
-          <v-btn :disabled="!isLoginValid" @click="sendLogin">Aceptar</v-btn>
+          <v-btn :disabled="!isLoginValid" color="success" @click="sendLogin">Aceptar</v-btn>
         </v-row>
         <v-divider class="mt-8 mb-4"></v-divider>
         <v-row justify="center">
           <v-col cols="auto">
             <h4>O crear una nueva cuenta</h4>
-            <v-btn class="ml-6" @click="isRegister = true">Registrar</v-btn>
+            <v-btn class="ml-6" color="orange" @click="isRegister = true">Registrar</v-btn>
           </v-col>
         </v-row>
 

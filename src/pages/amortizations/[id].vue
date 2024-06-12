@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import {useAmortizationStore} from "@/stores/amortization";
+
 const headers: Record<string, any>[] = [
   {
     align: 'start',
@@ -10,6 +12,9 @@ const headers: Record<string, any>[] = [
   {key: 'carbs', title: 'Intereses Devengados'},
   {key: 'actions', title: 'Total a Pagar'},
 ]
+const amortizationStore = useAmortizationStore()
+const data = computed(() => amortizationStore.amortization);
+console.log(data);
 </script>
 
 <template>

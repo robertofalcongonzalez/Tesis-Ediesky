@@ -1,5 +1,4 @@
 import {MAIN_SERVICE} from "@/constants";
-import {useAuthStore} from "@/stores/auth";
 
 export interface FetchOptions {
   headers?: Record<string, string>,
@@ -61,9 +60,8 @@ export function request<T>(path: string, options: FetchOptions = {} as FetchOpti
     ...extraOpts
   };
   if (useAuth) {
-    const authStore = useAuthStore()
-    const token = authStore.getToken;
-    Object.assign(reqOptions, token && {Authorization: `Bearer ${token}`})
+    const token = localStorage.getItem('token');
+    Object.assign(reqOptions.headers,{Authorization: `Bearer ${token}`})
   }
   if (body) {
     reqOptions.body = typeof body === 'object' ? JSON.stringify(body) : body;
@@ -71,8 +69,7 @@ export function request<T>(path: string, options: FetchOptions = {} as FetchOpti
 
   let queryString = '';
   if (query) {
-    queryString = new URLSearchParams(query).toString();
-    queryString = queryString && `?${queryString}`;
+   queryString = `?${btoa(JSON.stringify(query))}`
   }
 
   return fetch(`${host}${path}${queryString}`, reqOptions as RequestOptions).then(parseResponse<T>);
