@@ -5,7 +5,7 @@
   definePage({
     name: 'home',
     path: '/',
-    redirect(to) {
+    redirect() {
         return '/simulations/'
     },
   })

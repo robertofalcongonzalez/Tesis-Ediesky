@@ -2,7 +2,6 @@
 
 import {useSimulationData} from "@/composables/useSimulationData";
 import {useSimulationStore} from "@/stores/simulation";
-import router from "@/router";
 import {definePage} from "unplugin-vue-router/runtime";
 
 

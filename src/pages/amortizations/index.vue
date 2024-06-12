@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {useAmortizationData} from "@/composables/useAmortizationData";
 import {useAmortizationStore} from "@/stores/amortization";
-import router from "@/router";
 
 const amortizationData = useAmortizationData()
 onMounted(async () => {
