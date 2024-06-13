@@ -16,7 +16,7 @@ const headers: Record<string, any>[] = [
   {key: 'interests', title: 'Intereses Devengados'},
   {key: 'total', title: 'Total a Pagar'},
 ]
-onMounted(async()=> await amortizationData.getAmortizationById(route.query as {id: any, report_id: any}))
+onMounted(async()=> await amortizationData.getAmortizationById(route.query as {id: any}))
 const data = computed(() => amortizationStore.amortization);
 </script>
 

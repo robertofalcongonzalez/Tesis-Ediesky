@@ -24,7 +24,7 @@ const isReadOnly = ((route.params as Record<string, any>).id as string) !== 'new
 const sendSimulation = async () => {
   const saved = await simulationsData.sendSaveSimulation(simulationsStore.toSaveSimulation);
   if (saved) {
-    return router.replace({path: `/amortizations/${saved.report_id}`, query: {simulation: saved.id, report: saved.report_id}});
+    return router.replace({path: `/amortizations/${saved.id}`, query: {simulation: saved.id}});
   }
   snackBarText.value = saved.message;
   snackBar.value = true;
