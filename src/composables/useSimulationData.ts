@@ -7,7 +7,7 @@ export function useSimulationData() {
 
   const getSimulation = async (query: any = simulationStore.query) => {
     simulationStore.query.limit = query.itemsPerPage;
-    simulationStore.query.offset = (query.page -1) * query.itemsPerPage;
+    simulationStore.query.offset = (query.page - 1) * query.itemsPerPage;
     simulationStore.query.filters = {};
     const simulations = await getSimulations(simulationStore.query)
     const {saveSimulations} = simulationStore;
@@ -23,6 +23,7 @@ export function useSimulationData() {
     return true
   }
   const sendSaveSimulation = async (sendData: any) => {
+    const oldData = sendData.payment_capacity;
     const types: Record<string, any> = {
       income: 'INCOME',
       expenses: 'SPENT',
@@ -47,11 +48,9 @@ export function useSimulationData() {
       i++;
     }
     sendData.payment_capacity = newStructure;
-    try {
-      return await saveSimulation(sendData)
-    } catch (error) {
-      return false
-    }
+    const data =  await saveSimulation(sendData)
+    sendData.payment_capacity = oldData;
+    return data;
 
   }
 

@@ -16,7 +16,7 @@ export const getTypeInversions = async () => {
 }
 
 export const saveSimulation = async (simulation: any[]) => {
-  const {data} = await request<{ complete: boolean, data: any }>('simulations/', {
+  const data = await request<{ complete: boolean, data: any }>('simulations/', {
     method: 'POST',
     body: simulation,
     useAuth: true,

@@ -13,8 +13,8 @@ const headers: Record<string, any>[] = [
     key: 'id',
     title: 'ID',
   },
-  {key: 'simulation', title: 'Simulación'},
-  {key: 'duration', title: 'Duracion(meses)'},
+  {key: 'serial', title: 'Serial'},
+  {key: 'created_at', title: 'Fecha'},
   {key: 'actions', title: 'Acciones'},
 ]
 const showDetails = (item: any) => {
@@ -34,6 +34,9 @@ const showDetails = (item: any) => {
         <v-data-table :items="amortizationStore.amortizations" :headers="headers">
           <template v-slot:[`item.actions`]="{ item }">
             <v-btn color="info" :to="`${item.id}`" @click="showDetails(item)">Detalles</v-btn>
+          </template>
+          <template v-slot:[`item.created_at`]="{ item }">
+            {{ item.created_at.split('T')[0]+ ' ' +item.created_at.split('T')[1].split('.')[0] }}
           </template>
         </v-data-table>
       </v-col>

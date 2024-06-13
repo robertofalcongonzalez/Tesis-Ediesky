@@ -1,5 +1,5 @@
 import {useAmortizationStore} from "@/stores/amortization";
-import {getAmortization} from "@/services/amortization/amortization-service";
+import {getAmortization, getAmortizationById} from "@/services/amortization/amortization-service";
 
 export function useAmortizationData() {
   const amortizationStore = useAmortizationStore();
@@ -14,7 +14,7 @@ export function useAmortizationData() {
     saveAmortizations(amortizations);
     return true
   }
-  const getAmortizationById = async (query: {id: any}) => {
+  const getAmortizationDataById = async (query: {id: any}) => {
     const amortization = await getAmortizationById(query)
 
     const {saveAmortization} = amortizationStore;
@@ -24,5 +24,5 @@ export function useAmortizationData() {
   const mapToDetails = (details: any) => {
     amortizationStore.amortization = details;
   }
-  return {getAmortizations, mapToDetails, getAmortizationById}
+  return {getAmortizations, mapToDetails, getAmortizationDataById}
 }

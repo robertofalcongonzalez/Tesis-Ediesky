@@ -23,12 +23,11 @@ const verticalHeaders: Ref<{
 const isReadOnly = ((route.params as Record<string, any>).id as string) !== 'new';
 const sendSimulation = async () => {
   const saved = await simulationsData.sendSaveSimulation(simulationsStore.toSaveSimulation);
-  if (saved) {
-    return router.replace({path: `/amortizations/${saved.id}`, query: {simulation: saved.id}});
+  if (('data' in saved)) {
+    return router.replace({path: `/amortizations/${saved.data.id}`});
   }
-  snackBarText.value = saved.message;
+  snackBarText.value = saved.message.name[0];
   snackBar.value = true;
-  //toAST
 }
 </script>
 
