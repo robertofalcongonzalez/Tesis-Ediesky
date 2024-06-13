@@ -7,4 +7,10 @@ export const getAmortization = async (query: any) => {
   })
   return data;
 }
+export const getAmortizationById = async (query: any) => {
+  const {data} = await request<{ complete: boolean, data: any }>(`simulations/${query.id}/report/${query.report_id}`, {
+    useAuth: true,
+  })
+  return data;
+}
 

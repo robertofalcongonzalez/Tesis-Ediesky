@@ -14,8 +14,15 @@ export function useAmortizationData() {
     saveAmortizations(amortizations);
     return true
   }
+  const getAmortizationById = async (query: {id: any, report_id: any}) => {
+    const amortization = await getAmortizationById(query)
+
+    const {saveAmortization} = amortizationStore;
+    saveAmortization(amortization);
+    return true
+  }
   const mapToDetails = (details: any) => {
     amortizationStore.amortization = details;
   }
-  return {getAmortizations, mapToDetails}
+  return {getAmortizations, mapToDetails, getAmortizationById}
 }

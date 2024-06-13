@@ -48,11 +48,11 @@ export function useSimulationData() {
     }
     sendData.payment_capacity = newStructure;
     try {
-      await saveSimulation(sendData)
+      return await saveSimulation(sendData)
     } catch (error) {
       return false
     }
-    return true
+
   }
 
   const mapToDetails = (details: any) => {

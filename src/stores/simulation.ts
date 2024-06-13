@@ -24,9 +24,22 @@ export const useSimulationStore = defineStore('simulations', () => {
     results: []
   }) => typeInversions.value = typeInversionFromServer.results;
 
+  function $resetSimulationToSave() {
+    toSaveSimulation.value = {
+      amount: 0, duration: 0, type_inversion: '', payment_capacity: [
+        {income: 0, expenses: 0, taxes: 0},
+        {income: 0, expenses: 0, taxes: 0},
+        {income: 0, expenses: 0, taxes: 0},
+        {income: 0, expenses: 0, taxes: 0},
+        {income: 0, expenses: 0, taxes: 0},
+        {income: 0, expenses: 0, taxes: 0},
+      ]
+    }
+  }
+
   function $reset() {
     simulations.value = [];
   }
 
-  return {saveSimulations, simulations, typeInversions, toSaveSimulation, saveTypeInversion, $reset, query}
+  return {saveSimulations, simulations, typeInversions, toSaveSimulation,$resetSimulationToSave, saveTypeInversion, $reset, query}
 })

@@ -1,20 +1,23 @@
 <script setup lang="ts">
 import {useAmortizationStore} from "@/stores/amortization";
+import {useAmortizationData} from "@/composables/useAmortizationData";
 
+const route = useRoute();
+const amortizationStore = useAmortizationStore()
+const amortizationData = useAmortizationData()
 const headers: Record<string, any>[] = [
   {
     align: 'start',
-    key: 'id',
+    key: 'duration',
     title: 'Fecha',
   },
-  {key: 'calories', title: 'Importe'},
-  {key: 'fat', title: 'Saldo Utilizado'},
-  {key: 'carbs', title: 'Intereses Devengados'},
-  {key: 'actions', title: 'Total a Pagar'},
+  {key: 'amount', title: 'Importe'},
+  {key: 'money', title: 'Saldo Utilizado'},
+  {key: 'interests', title: 'Intereses Devengados'},
+  {key: 'total', title: 'Total a Pagar'},
 ]
-const amortizationStore = useAmortizationStore()
+onMounted(async()=> await amortizationData.getAmortizationById(route.query as {id: any, report_id: any}))
 const data = computed(() => amortizationStore.amortization);
-console.log(data);
 </script>
 
 <template>
@@ -27,13 +30,17 @@ console.log(data);
     <v-row>
       <h2 class="ma-auto ml-3">Cronograma de Amortización</h2>
       <v-spacer></v-spacer>
+      <h2>{{data.type_inversion}}</h2>
     </v-row>
     <v-row>
+      {{data.description}}
       <v-spacer></v-spacer>
+      {{data.interest_rate}}
+
     </v-row>
     <v-row>
       <v-col>
-        <v-data-table :headers="headers"></v-data-table>
+        <v-data-table :items="data.report" :headers="headers"></v-data-table>
       </v-col>
     </v-row>
   </v-container>
