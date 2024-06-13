@@ -12,7 +12,7 @@ export const useAmortizationStore = defineStore('amortization', () => {
   const saveAmortizations = (amortizationFromServer: {
     results: []
   }) => amortizations.value = amortizationFromServer.results;
-  const saveAmortization = (amortizationFromServer: any) => amortization.value = amortizationFromServer;
+  const saveAmortization = (amortizationFromServer: any) => amortization.value = amortizationFromServer[0];
 
   function $reset() {
     amortizations.value = [];
