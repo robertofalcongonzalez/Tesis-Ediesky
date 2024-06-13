@@ -27,7 +27,7 @@ const data = computed(() => amortizationStore.amortization);
       <v-divider class="ml-2" vertical></v-divider>
       <v-spacer></v-spacer>
     </v-row>
-    <v-row>
+    <v-row justify="space-around">
       <h2 class="ma-auto ml-3">Cronograma de Amortización</h2>
       <v-spacer></v-spacer>
       <h2>Tipo de Inversión: {{data.type_inversion}}</h2>
@@ -38,8 +38,6 @@ const data = computed(() => amortizationStore.amortization);
       <h4 class="ma-auto ml-3">Tasa de Interés: {{data.interest_rate}}</h4>
       <v-spacer></v-spacer>
       <h4 class="ma-auto ml-3">Capacidad de pago: {{data.payment_capacity}}</h4>
-
-
     </v-row>
     <v-row>
       <v-col>
