@@ -23,7 +23,6 @@ export function useSimulationData() {
     return true
   }
   const sendSaveSimulation = async (sendData: any) => {
-    const oldData = sendData.payment_capacity;
     const types: Record<string, any> = {
       income: 'INCOME',
       expenses: 'SPENT',
@@ -49,7 +48,7 @@ export function useSimulationData() {
     }
     sendData.payment_capacity = newStructure;
     const data =  await saveSimulation(sendData)
-    sendData.payment_capacity = oldData;
+    simulationStore.initializeSimulationData();
     return data;
 
   }

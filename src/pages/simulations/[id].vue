@@ -32,7 +32,7 @@ const sendSimulation = async () => {
 </script>
 
 <template>
-  <v-snackbar close-delay="600" color="#e35555" absolute location="top center" v-model:model-value="snackBar" :text="snackBarText"></v-snackbar>
+  <v-snackbar close-delay="300" color="#e35555" absolute location="top center" v-model:model-value="snackBar" :text="snackBarText"></v-snackbar>
   <v-form v-model:model-value="isReadyToSend">
     <v-row>
       <h1 class="ma-auto ml-3">Generar Simulación</h1>

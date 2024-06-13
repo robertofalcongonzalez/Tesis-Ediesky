@@ -1,6 +1,15 @@
 // Utilities
 import {defineStore} from 'pinia'
-
+const simulationData = {
+  amount: 0, duration: 0, type_inversion: '', payment_capacity: [
+    {income: 0, expenses: 0, taxes: 0},
+    {income: 0, expenses: 0, taxes: 0},
+    {income: 0, expenses: 0, taxes: 0},
+    {income: 0, expenses: 0, taxes: 0},
+    {income: 0, expenses: 0, taxes: 0},
+    {income: 0, expenses: 0, taxes: 0},
+  ]
+}
 export const useSimulationStore = defineStore('simulations', () => {
   const simulations = ref([''])
   const query = {
@@ -20,6 +29,7 @@ export const useSimulationStore = defineStore('simulations', () => {
     ]
   })
   const saveSimulations = (simulationFromServer: { results: [] }) => simulations.value = simulationFromServer.results;
+  const initializeSimulationData = () => toSaveSimulation.value = simulationData;
   const saveTypeInversion = (typeInversionFromServer: {
     results: []
   }) => typeInversions.value = typeInversionFromServer.results;
@@ -41,5 +51,5 @@ export const useSimulationStore = defineStore('simulations', () => {
     simulations.value = [];
   }
 
-  return {saveSimulations, simulations, typeInversions, toSaveSimulation,$resetSimulationToSave, saveTypeInversion, $reset, query}
+  return {saveSimulations, simulations, typeInversions, initializeSimulationData, toSaveSimulation,$resetSimulationToSave, saveTypeInversion, $reset, query}
 })
