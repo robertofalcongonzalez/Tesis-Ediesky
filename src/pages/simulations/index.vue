@@ -23,7 +23,11 @@ const headers: Record<string, any>[] = [
   {key: 'amount', title: 'Monto'},
   {key: 'actions', title: 'Acciones'},
 ]
+const cleanSimulation = () => {
+  return simulationsStore.$resetSimulationToSave();
+}
 const showDetails = (item: any) => {
+  simulationsStore.$resetSimulationToSave();
   simulationsData.mapToDetails(unref(item))
 }
 definePage({
@@ -38,7 +42,7 @@ definePage({
       <v-divider class="ml-2" vertical></v-divider>
       <v-spacer></v-spacer>
       <v-col class="d-flex justify-end">
-        <v-btn color="success" :to="{ path: 'new'}">Generar</v-btn>
+        <v-btn color="success" @click="cleanSimulation" :to="{ path: 'new'}">Generar</v-btn>
       </v-col>
     </v-row>
     <v-row v-if="Array.isArray(simulationsStore.simulations)">

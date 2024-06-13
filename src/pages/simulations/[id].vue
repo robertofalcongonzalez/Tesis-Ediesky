@@ -6,6 +6,8 @@ import {Ref} from "vue";
 const route = useRoute();
 const router = useRouter();
 const isReadyToSend = ref(false);
+const snackBar = ref(false);
+const snackBarText = ref('');
 const simulationsData = useSimulationData()
 onMounted(async () => await simulationsData.getTypeInversion())
 const simulationsStore = useSimulationStore()
@@ -22,27 +24,31 @@ const isReadOnly = ((route.params as Record<string, any>).id as string) !== 'new
 const sendSimulation = async () => {
   const saved = await simulationsData.sendSaveSimulation(simulationsStore.toSaveSimulation);
   if (saved) {
-    router.replace('/simulations');
+    return router.replace({path: `/amortizations/${saved.report_id}`, query: {simulation: saved.id, report: saved.report_id}});
   }
+  snackBarText.value = saved.message;
+  snackBar.value = true;
+  //toAST
 }
 </script>
 
 <template>
+  <v-snackbar close-delay="600" color="#e35555" absolute location="top center" v-model:model-value="snackBar" :text="snackBarText"></v-snackbar>
   <v-form v-model:model-value="isReadyToSend">
     <v-row>
       <h1 class="ma-auto ml-3">Generar Simulación</h1>
       <v-divider class="ml-2" vertical></v-divider>
       <v-col>
         <v-text-field :readonly="isReadOnly"
-          :rules="[(v)=> (!!v && v.length <= 15) || 'Requerido']"
-          v-model:model-value="simulationsStore.toSaveSimulation.amount" type="number"
-          label="Monto a pedir*"></v-text-field>
+                      :rules="[(v)=> (!!v && v.length <= 15) || 'Requerido']"
+                      v-model:model-value="simulationsStore.toSaveSimulation.amount" type="number"
+                      label="Monto a pedir*"></v-text-field>
       </v-col>
       <v-col>
         <v-text-field :readonly="isReadOnly"
-          :rules="[(v)=> (!!v && v >= 3 && v <= 120) || 'Requerido']"
-          v-model:model-value="simulationsStore.toSaveSimulation.duration" type="number" min="3" step="1"
-          label="Tiempo Estimado de Pago(Meses)*"></v-text-field>
+                      :rules="[(v)=> (!!v && v >= 3 && v <= 120) || 'Requerido']"
+                      v-model:model-value="simulationsStore.toSaveSimulation.duration" type="number" min="3" step="1"
+                      label="Tiempo Estimado de Pago(Meses)*"></v-text-field>
       </v-col>
       <v-col v-if="simulationsStore.typeInversions.length">
         <v-select item-title="name"
@@ -93,6 +99,5 @@ const sendSimulation = async () => {
 
 </template>
 
-<style scoped lang="sass">
-
+<style>
 </style>
