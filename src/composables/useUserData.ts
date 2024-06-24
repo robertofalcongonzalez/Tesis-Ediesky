@@ -1,5 +1,5 @@
 import {useUserStore} from "@/stores/user";
-import {getEconomicActors} from "@/services/user/user-service";
+import {getEconomicActors, getUsers} from "@/services/user/user-service";
 import {useAuthData} from "@/composables/useAuthData";
 import {Ref} from "vue";
 
@@ -18,6 +18,14 @@ export function useUserData() {
     typeActorArray.value = userStore.economicActors[searchTypeActorByActorId(auth.registerRow.value.economic_actor)].type_actor
     return true
   }
+  const getAllUsers = async () => {
+    const users = await getUsers()
 
-  return {getActors, searchTypeActorByActorId, typeActorArray}
+    const {saveUsers} = userStore;
+    saveUsers(users.results);
+    return true
+  }
+
+
+  return {getActors, getAllUsers, searchTypeActorByActorId, typeActorArray}
 }

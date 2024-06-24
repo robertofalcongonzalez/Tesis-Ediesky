@@ -6,3 +6,7 @@ export const getEconomicActors = async () => {
   })
   return data;
 }
+export const getUsers = async () => {
+  const {data} = await request<{ complete: boolean, data: any }>('users/')
+  return data;
+}
