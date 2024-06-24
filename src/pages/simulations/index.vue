@@ -47,15 +47,15 @@ definePage({
     </v-row>
     <v-row v-if="Array.isArray(simulationsStore.simulations)">
       <v-col>
-        <v-data-table
+        <v-data-table density="compact"
           v-model:items-per-page="simulationsStore.query.limit"
           @update:options="simulationsData.getSimulation"
           :items="simulationsStore.simulations" :headers="headers">
           <template v-slot:[`item.type_inversion`]="{ item }">
-            {{ `${simulationsStore.typeInversions.find((key) => key?.id === item?.type_inversion)?.name}` }}
+            {{ `${simulationsStore.typeInversions.find((key) => key.id === item.id)?.name}` }}
           </template>
           <template v-slot:[`item.actions`]="{ item }">
-            <v-btn color="info" :to="`${item.id}`" @click="showDetails(item)">Detalles</v-btn>
+            <v-btn color="info" density="compact" :to="`${item.id}`" @click="showDetails(item)">Detalles</v-btn>
           </template>
         </v-data-table>
       </v-col>

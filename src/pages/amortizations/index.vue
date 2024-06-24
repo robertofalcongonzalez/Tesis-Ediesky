@@ -31,9 +31,9 @@ const showDetails = (item: any) => {
     </v-row>
     <v-row>
       <v-col>
-        <v-data-table :items="amortizationStore.amortizations" :headers="headers">
+        <v-data-table density="compact" :items="amortizationStore.amortizations" :headers="headers">
           <template v-slot:[`item.actions`]="{ item }">
-            <v-btn color="info" :to="`${item.id}`" @click="showDetails(item)">Detalles</v-btn>
+            <v-btn color="info" density="compact" :to="`${item.id}`" @click="showDetails(item)">Detalles</v-btn>
           </template>
           <template v-slot:[`item.created_at`]="{ item }">
             {{ item.created_at.split('T')[0]+ ' ' +item.created_at.split('T')[1].split('.')[0] }}
