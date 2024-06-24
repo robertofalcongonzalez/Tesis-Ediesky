@@ -29,10 +29,19 @@ const sendSimulation = async () => {
   snackBarText.value = saved.message.name[0];
   snackBar.value = true;
 }
+let localStorageActor = localStorage.getItem('economic_actor') as 'Persona Jurídica' | 'Persona Natural';
+
+enum userTypes {
+  'Persona Natural' = 'Capacidad de pago',
+  'Persona Jurídica' = 'Capacidad de pago',
+}
+
+const formTitle = userTypes[localStorageActor];
 </script>
 
 <template>
-  <v-snackbar close-delay="300" color="#e35555" absolute location="top center" v-model:model-value="snackBar" :text="snackBarText"></v-snackbar>
+  <v-snackbar close-delay="300" color="#e35555" absolute location="top center" v-model:model-value="snackBar"
+              :text="snackBarText"></v-snackbar>
   <v-form v-model:model-value="isReadyToSend">
     <v-row>
       <h1 class="ma-auto ml-3">Generar Simulación</h1>
@@ -71,7 +80,7 @@ const sendSimulation = async () => {
             <v-table>
               <thead>
               <tr>
-                <th></th>
+                <th> {{ formTitle }}</th>
                 <th v-for="key in 6" :key="key" class="text-center">
                   {{ key }}
                 </th>
