@@ -22,7 +22,9 @@ declare module 'vue-router/auto-routes' {
     '/amortizations/': RouteRecordInfo<'/amortizations/', '/amortizations', Record<never, never>, Record<never, never>>,
     '/amortizations/[id]': RouteRecordInfo<'/amortizations/[id]', '/amortizations/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     '/Login': RouteRecordInfo<'/Login', '/Login', Record<never, never>, Record<never, never>>,
+    'settings': RouteRecordInfo<'settings', '/settings', Record<never, never>, Record<never, never>>,
     'simulations': RouteRecordInfo<'simulations', '/simulations', Record<never, never>, Record<never, never>>,
     '/simulations/[id]': RouteRecordInfo<'/simulations/[id]', '/simulations/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    'users': RouteRecordInfo<'users', '/users', Record<never, never>, Record<never, never>>,
   }
 }
