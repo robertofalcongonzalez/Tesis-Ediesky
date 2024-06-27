@@ -52,7 +52,7 @@ definePage({
           @update:options="simulationsData.getSimulation"
           :items="simulationsStore.simulations" :headers="headers">
           <template v-slot:[`item.type_inversion`]="{ item }">
-            {{ `${simulationsStore.typeInversions.find((key) => key.id === item.id)?.name}` }}
+            {{ `${simulationsStore.typeInversions.find((key) => key.id === item.type_inversion)?.name}` }}
           </template>
           <template v-slot:[`item.actions`]="{ item }">
             <v-btn color="info" density="compact" :to="`${item.id}`" @click="showDetails(item)">Detalles</v-btn>
