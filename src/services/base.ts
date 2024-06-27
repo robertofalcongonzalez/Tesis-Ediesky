@@ -1,4 +1,5 @@
 import {MAIN_SERVICE} from "@/constants";
+import {AuthenticationError, AuthorizationError, NotFoundError, ServerError, ValidationError} from "@/services/error";
 
 export interface FetchOptions {
   headers?: Record<string, string>,
@@ -29,10 +30,18 @@ function assertPath(path: string) {
 export const hosts = {
   MAIN_SERVICE: MAIN_SERVICE || requiredEnv('MAIN_SERVICE'),
 };
-
+export const severErrors: Record<number, any> = {
+  400: ValidationError,
+  401: AuthenticationError,
+  403: AuthorizationError,
+  404: NotFoundError,
+  500: ServerError,
+};
 async function parseResponse<T>(res: Response) {
+  if(res.status in severErrors) {
+      return new severErrors[res.status](await res.json());
+  }
   const {complete, error, ...data} = res.status !== 204 ? await res.json() : {complete: true, error: {message: null}};
-
   if (!complete) throw new Error(error.message);
   return {...data, complete} as T;
 }
@@ -72,5 +81,5 @@ export function request<T>(path: string, options: FetchOptions = {} as FetchOpti
    queryString = `?${btoa(JSON.stringify(query))}`
   }
 
-  return fetch(`${host}${path}${queryString}`, reqOptions as RequestOptions).then(parseResponse<T>);
+  return fetch(`${host}${path}${queryString}`, reqOptions as RequestOptions).then(parseResponse<T>)
 }

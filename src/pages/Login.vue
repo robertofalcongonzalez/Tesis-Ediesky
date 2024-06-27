@@ -3,9 +3,16 @@ import {definePage} from "unplugin-vue-router/runtime";
 import {useAuthData} from "@/composables/useAuthData";
 import {useUserData} from "@/composables/useUserData";
 import {useUserStore} from "@/stores/user";
-
+import {useAppStore} from "@/stores/app";
+const appStore = useAppStore()
 const isRegisterValid = ref(false);
 const isLoginValid = ref(false);
+onMounted(async ()=>{
+  if(appStore.error){
+    appStore.snackBarText = appStore.error
+    appStore.snackBar = true;
+  }
+})
 const rules = ref({
   email: [
     (v: string) => !!v || 'Correo Requerido',
@@ -34,7 +41,7 @@ const economicActorChanged = (value: number | string) => {
 }
 definePage({
   meta: {
-    layout: 'noLayout'
+    layout: 'noLayout',
   },
 })
 </script>

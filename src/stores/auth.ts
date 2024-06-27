@@ -4,7 +4,6 @@ import {defineStore} from 'pinia'
 export const useAuthStore = defineStore('auth', () => {
   const token = ref('')
   const userId = ref(-1)
-
   const getToken = computed(() => token)
   const getLoggedUser = computed(() => userId)
 
