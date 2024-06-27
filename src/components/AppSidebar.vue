@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const drawer = ref(false)
+const groupName = localStorage.getItem('role')
 </script>
 
 <template>
@@ -40,7 +41,7 @@ const drawer = ref(false)
         </template>
         <v-list-item-title>Amortizaciones</v-list-item-title>
       </v-list-item>
-      <v-list-item :to="{ path: '/users/' }">
+      <v-list-item v-if="groupName === 'Admin'" :to="{ path: '/users/' }">
         <template v-slot:prepend>
           <v-icon>
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 15 15">
@@ -52,7 +53,7 @@ const drawer = ref(false)
         </template>
         <v-list-item-title>Usuarios</v-list-item-title>
       </v-list-item>
-      <v-list-item :to="{ path: '/settings/' }">
+      <v-list-item v-if="groupName === 'Admin'" :to="{ path: '/settings/' }">
         <template v-slot:prepend>
           <v-icon>
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">

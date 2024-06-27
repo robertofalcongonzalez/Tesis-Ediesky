@@ -11,14 +11,15 @@ export const register = async (body: RegisterData) => {
   return !complete || data;
 }
 export const login = async (body: LoginData) => {
-  const {token,user_id, complete, economic_actor} = await request<LoginResponse>('auth/login/', {
+  const data = await request<LoginResponse>('auth/login/', {
     useAuth: false,
     method: 'POST',
     body
   })
-  localStorage.setItem('token', token)
-  localStorage.setItem('economic_actor', economic_actor)
-  localStorage.setItem('userId', `${user_id}`)
-  return complete;
+  localStorage.setItem('token', data.token);
+  localStorage.setItem('role', data.group_name[0]);
+  localStorage.setItem('economic_actor', data.economic_actor)
+  localStorage.setItem('userId', `${data.user_id}`)
+  return data.complete;
 }
 
