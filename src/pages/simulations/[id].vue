@@ -33,7 +33,7 @@ let localStorageActor = localStorage.getItem('economic_actor') as 'Persona Jurí
 
 enum userTypes {
   'Persona Natural' = 'Capacidad de pago',
-  'Persona Jurídica' = 'Capacidad de pago',
+  'Persona Jurídica' = 'Flujo de caja',
 }
 
 const formTitle = userTypes[localStorageActor];

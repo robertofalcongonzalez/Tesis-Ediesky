@@ -47,23 +47,23 @@ definePage({
           <v-row>
             <v-col>
               <v-text-field
-                :rules="[(v)=> (v !== undefined && v.length <= 150) || 'El nombre tiene que tener menos de 150 caracteres']"
-                v-model:model-value="registerRow.first_name" label="Nombre"></v-text-field>
+                :rules="[(v)=> (!!v && v.length <= 150 && v.length >= 3) || 'El nombre tiene que tener menos de 150 caracteres']"
+                v-model:model-value="registerRow.first_name" label="Nombre*"></v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col>
               <v-text-field
-                :rules="[(v)=> (v !== undefined && v.length <= 150) || 'Los apellidos tiene que tener menos de 150 caracteres']"
-                v-model:model-value="registerRow.last_name" label="Apellidos"></v-text-field>
+                :rules="[(v)=> (!!v && v.length <= 150 && v.length >= 3) || 'Los apellidos tiene que tener menos de 150 caracteres']"
+                v-model:model-value="registerRow.last_name" label="Apellidos*"></v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col>
               <v-text-field
-                :rules="[(v)=> (!!v ? /^[0-9]{11}$/.test(v) : true)  || 'El Carnét de Identidad tiene que tener 11 caracteres']"
+                :rules="[(v)=> (!!v && /^[0-9]{11}$/.test(v))  || 'El Carnét de Identidad tiene que tener 11 caracteres']"
                 v-model:model-value="registerRow.ci" type="number" min="0" step="1"
-                label="Carnét de Identidad"></v-text-field>
+                label="Carnét de Identidad*"></v-text-field>
             </v-col>
           </v-row>
           <v-row>
