@@ -44,7 +44,8 @@ const formTitle = userTypes[localStorageActor];
               :text="snackBarText"></v-snackbar>
   <v-form v-model:model-value="isReadyToSend">
     <v-row>
-      <h1 class="ma-auto ml-3">Generar Simulación</h1>
+      <h1 class="ma-auto ml-3" v-if="isReadOnly">Detalles Simulación</h1>
+      <h1 class="ma-auto ml-3" v-if="!isReadOnly">Generar Simulación</h1>
       <v-divider class="ml-2" vertical></v-divider>
       <v-col>
         <v-text-field :readonly="isReadOnly"
@@ -93,7 +94,7 @@ const formTitle = userTypes[localStorageActor];
               >
                 <td>{{ value }}</td>
                 <td v-for="index in 6" :key="index">
-                  <v-text-field :rules="[(v)=> !!v || 'Requerido']" :readonly="isReadOnly"
+                  <v-text-field :rules="[(v)=> !!v || 'Requerido']" :readonly="isReadOnly" type="number"
                                 v-model:model-value="simulationsStore.toSaveSimulation.payment_capacity[index - 1][key]"></v-text-field>
                 </td>
               </tr>

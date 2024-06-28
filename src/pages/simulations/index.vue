@@ -12,17 +12,22 @@ onMounted(async () => {
   await simulationsData.getSimulation()
   await simulationsData.getTypeInversion()
 })
-const headers: Record<string, any>[] = [
-  {
-    align: 'start',
-    key: 'id',
-    title: 'ID',
-  },
-  {key: 'type_inversion', title: 'Tipo de Inversión'},
-  {key: 'duration', title: 'Duración(Meses)'},
-  {key: 'amount', title: 'Monto'},
-  {key: 'actions', title: 'Acciones'},
-]
+const groupName = localStorage.getItem('role')
+
+const get_headers = () => {
+  let headers = [
+    {align: 'start', key: 'id', title: 'ID'},
+    {key: 'type_inversion', title: 'Tipo de Inversión'},
+    {key: 'duration', title: 'Duración(Meses)'},
+    {key: 'amount', title: 'Monto'},
+    {key: 'actions', title: 'Acciones'},
+  ];
+  if ("Admin" === groupName) {
+    headers.push({key: 'email', title: 'Usuario'})
+  }
+  return headers
+}
+
 const cleanSimulation = () => {
   return simulationsStore.$resetSimulationToSave();
 }
@@ -48,9 +53,9 @@ definePage({
     <v-row v-if="Array.isArray(simulationsStore.simulations)">
       <v-col>
         <v-data-table density="compact"
-          v-model:items-per-page="simulationsStore.query.limit"
-          @update:options="simulationsData.getSimulation"
-          :items="simulationsStore.simulations" :headers="headers">
+                      v-model:items-per-page="simulationsStore.query.limit"
+                      @update:options="simulationsData.getSimulation"
+                      :items="simulationsStore.simulations" :headers="get_headers()">
           <template v-slot:[`item.type_inversion`]="{ item }">
             {{ `${simulationsStore.typeInversions.find((key) => key.id === item.type_inversion)?.name}` }}
           </template>
