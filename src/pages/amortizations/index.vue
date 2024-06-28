@@ -8,12 +8,8 @@ onMounted(async () => {
 })
 const amortizationStore = useAmortizationStore()
 const headers: Record<string, any>[] = [
-  {
-    align: 'start',
-    key: 'id',
-    title: 'ID',
-  },
-  {key: 'serial', title: 'Serial'},
+
+  {key: 'serial', title: 'Serial', align: 'start',},
   {key: 'created_at', title: 'Fecha'},
   {key: 'actions', title: 'Acciones'},
 ]
@@ -36,7 +32,7 @@ const showDetails = (item: any) => {
             <v-btn color="info" density="compact" :to="`${item.id}`" @click="showDetails(item)">Detalles</v-btn>
           </template>
           <template v-slot:[`item.created_at`]="{ item }">
-            {{ item.created_at.split('T')[0]+ ' ' +item.created_at.split('T')[1].split('.')[0] }}
+            {{ item.created_at.split('T')[0] + ' ' + item.created_at.split('T')[1].split('.')[0] }}
           </template>
         </v-data-table>
       </v-col>

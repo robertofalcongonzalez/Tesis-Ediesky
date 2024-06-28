@@ -16,14 +16,13 @@ const groupName = localStorage.getItem('role')
 
 const get_headers = () => {
   let headers = [
-    {align: 'start', key: 'id', title: 'ID'},
     {key: 'type_inversion', title: 'Tipo de Inversión'},
     {key: 'duration', title: 'Duración(Meses)'},
     {key: 'amount', title: 'Monto'},
     {key: 'actions', title: 'Acciones'},
   ];
   if ("Admin" === groupName) {
-    headers.push({key: 'email', title: 'Usuario'})
+    headers.unshift({key: 'email', title: 'Usuario', align: 'start'})
   }
   return headers
 }
