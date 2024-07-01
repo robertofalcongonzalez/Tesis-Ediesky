@@ -4,11 +4,12 @@ import {useAuthData} from "@/composables/useAuthData";
 import {useUserData} from "@/composables/useUserData";
 import {useUserStore} from "@/stores/user";
 import {useAppStore} from "@/stores/app";
+
 const appStore = useAppStore()
 const isRegisterValid = ref(false);
 const isLoginValid = ref(false);
-onMounted(async ()=>{
-  if(appStore.error){
+onMounted(async () => {
+  if (appStore.error) {
     appStore.snackBarText = appStore.error
     appStore.snackBar = true;
   }
@@ -49,6 +50,7 @@ definePage({
   <v-container class="fill-height">
     <v-card v-if="isRegister" min-width="500px" class="ma-auto align-self-center">
       <v-card-title>Registrar</v-card-title>
+
       <v-card-text>
         <v-form v-model:model-value="isRegisterValid">
           <v-row>
@@ -120,7 +122,10 @@ definePage({
       </v-card-text>
     </v-card>
     <v-card v-else min-width="500px" class="ma-auto align-self-center">
-      <v-card-title>Login</v-card-title>
+      <v-card-text>
+        <v-img height="180" src="@/assets/logo.jpg"></v-img>
+      </v-card-text>
+<!--      <v-card-title>Login</v-card-title>-->
       <v-card-text>
         <v-form v-model:model-value="isLoginValid">
           <v-row>
