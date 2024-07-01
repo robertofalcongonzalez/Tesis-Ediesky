@@ -23,3 +23,11 @@ export const saveSimulation = async (simulation: any[]) => {
   })
   return data;
 }
+export const deleteSimulation = async (id: any) => {
+  const data = await request<{ complete: boolean, data: any }>(`simulations/${id}/`, {
+    method: 'DELETE',
+    body: id,
+    useAuth: true,
+  })
+  return data;
+}

@@ -11,15 +11,19 @@ const snackBarText = ref('');
 const simulationsData = useSimulationData()
 onMounted(async () => await simulationsData.getTypeInversion())
 const simulationsStore = useSimulationStore()
-const verticalHeaders: Ref<{
+const localStorageActor = localStorage.getItem('economic_actor') as 'Persona Jurídica' | 'Persona Natural';
+
+let Created = {
   income: 'Ingresos',
   expenses: 'Gastos',
   taxes: 'Impuestos',
-}> = ref({
-  income: 'Ingresos',
-  expenses: 'Gastos',
-  taxes: 'Impuestos',
-})
+};
+if (localStorageActor === "Persona Jurídica") {
+  Created['debt'] = "Deuda";
+}
+
+const verticalHeaders: Ref<Created> = ref(Created)
+
 const isReadOnly = ((route.params as Record<string, any>).id as string) !== 'new';
 const sendSimulation = async () => {
   const saved = await simulationsData.sendSaveSimulation(simulationsStore.toSaveSimulation);
@@ -29,7 +33,6 @@ const sendSimulation = async () => {
   snackBarText.value = saved.message.name[0];
   snackBar.value = true;
 }
-let localStorageActor = localStorage.getItem('economic_actor') as 'Persona Jurídica' | 'Persona Natural';
 
 enum userTypes {
   'Persona Natural' = 'Capacidad de pago',
