@@ -12,6 +12,7 @@ onMounted(async () => {
   if (appStore.error) {
     appStore.snackBarText = appStore.error
     appStore.snackBar = true;
+    appStore.error = '';
   }
 })
 const rules = ref({
