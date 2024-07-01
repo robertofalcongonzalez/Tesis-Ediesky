@@ -26,7 +26,7 @@ const verticalHeaders: Ref<Created> = ref(Created)
 
 const isReadOnly = ((route.params as Record<string, any>).id as string) !== 'new';
 const sendSimulation = async () => {
-  const saved = await simulationsData.sendSaveSimulation(simulationsStore.toSaveSimulation);
+  const saved = await simulationsData.sendSaveSimulation();
   if (('data' in saved)) {
     return router.replace({path: `/amortizations/${saved.data.id}`});
   }

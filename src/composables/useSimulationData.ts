@@ -1,4 +1,9 @@
-import {getSimulations, getTypeInversions, saveSimulation, deleteSimulation} from "@/services/simulation/simulation-service";
+import {
+  deleteSimulation,
+  getSimulations,
+  getTypeInversions,
+  saveSimulation
+} from "@/services/simulation/simulation-service";
 import {useSimulationStore} from "@/stores/simulation";
 
 export function useSimulationData() {
@@ -24,9 +29,9 @@ export function useSimulationData() {
   }
 
   const sendDeleteSimulation = async (deleteElement: any) => {
-    const data = await deleteSimulation(deleteElement)
+    await deleteSimulation(deleteElement)
   }
-  const sendSaveSimulation = async (sendData: any) => {
+  const sendSaveSimulation = async () => {
     const types: Record<string, any> = {
       income: 'INCOME',
       expenses: 'SPENT',
@@ -51,32 +56,25 @@ export function useSimulationData() {
       }
       i++;
     }
-    sendData.payment_capacity = newStructure;
-    const data = await saveSimulation(sendData)
+    const dataToSend = JSON.parse(JSON.stringify(simulationStore.toSaveSimulation));
+    dataToSend.payment_capacity = newStructure;
+    const data = await saveSimulation(dataToSend)
     simulationStore.initializeSimulationData();
     return data;
 
   }
 
   const mapToDetails = (details: any) => {
-    let localStorageActor = localStorage.getItem('economic_actor') as 'Persona Jurídica' | 'Persona Natural';
-
-    enum userTypes {
-      'Persona Natural' = 'Capacidad de pago',
-      'Persona Jurídica' = 'Flujo de caja',
-    }
-
     simulationStore.toSaveSimulation.amount = details.amount
     simulationStore.toSaveSimulation.duration = details.duration
     simulationStore.toSaveSimulation.type_inversion = details.type_inversion
     simulationStore.toSaveSimulation.payment_capacity = simulationStore.toSaveSimulation.payment_capacity.map((_, index) => {
-      let return_value = {
+      return {
         income: details.payment_capacity.find((pC: any) => pC.type === 'INCOME')[`params_${+index + 1}`],
         expenses: details.payment_capacity.find((pC: any) => pC.type === 'SPENT')[`params_${+index + 1}`],
         taxes: details.payment_capacity.find((pC: any) => pC.type === 'TRIBUTE')[`params_${+index + 1}`],
         debt: details.payment_capacity.find((pC: any) => pC.type === 'DEBT')[`params_${+index + 1}`],
-      };
-      return return_value
+      }
     })
   }
 

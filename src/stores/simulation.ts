@@ -30,7 +30,8 @@ export const useSimulationStore = defineStore('simulations', () => {
     ]
   })
   const saveSimulations = (simulationFromServer: { results: [] }) => simulations.value = simulationFromServer.results;
-  const initializeSimulationData = () => toSaveSimulation.value = simulationData;
+  const initializeSimulationData = () => toSaveSimulation.value = structuredClone(simulationData);
+
   const saveTypeInversion = (typeInversionFromServer: {
     results: []
   }) => typeInversions.value = typeInversionFromServer.results;
