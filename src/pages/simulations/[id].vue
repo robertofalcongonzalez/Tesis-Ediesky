@@ -34,6 +34,8 @@ const sendSimulation = async () => {
   snackBar.value = true;
 }
 
+
+
 enum userTypes {
   'Persona Natural' = 'Capacidad de pago',
   'Persona Jurídica' = 'Flujo de caja',
@@ -97,8 +99,11 @@ const formTitle = userTypes[localStorageActor];
               >
                 <td>{{ value }}</td>
                 <td v-for="index in 6" :key="index">
-                  <v-text-field :rules="[(v)=> !!v || 'Requerido']" :readonly="isReadOnly" type="number"
-                                v-model:model-value="simulationsStore.toSaveSimulation.payment_capacity[index - 1][key]"></v-text-field>
+                  <v-text-field :rules="[(v)=> !!v || 'Requerido']" :readonly="isReadOnly" type="number" min="1"
+                                v-model:model-value="simulationsStore.toSaveSimulation.payment_capacity[index - 1][key]"
+                                >
+
+                  </v-text-field>
                 </td>
               </tr>
               </tbody>
