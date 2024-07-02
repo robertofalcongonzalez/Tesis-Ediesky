@@ -68,7 +68,8 @@ export class ValidationError<T extends Partial<Record<string, string[]>>> extend
 export class AuthenticationError<T extends Partial<Record<string, string[]>>> extends CustomNetworkError {
  constructor(response: ResProtocol) {
     super(networkErrors.auth, response);
-    store.setError(response.message.name, true);
+   // @ts-ignore
+   store.setError(response.message.name, routerInstance.currentRoute._value.name !== '/Login');
     routerInstance.replace({name: '/Login'});
   }
 }
