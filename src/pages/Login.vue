@@ -9,11 +9,12 @@ const appStore = useAppStore()
 const isRegisterValid = ref(false);
 const isLoginValid = ref(false);
 onMounted(async () => {
-  if (appStore.error) {
+  if (appStore.toLogin) {
     appStore.snackBarText = appStore.error
     appStore.snackBar = true;
-    appStore.error = '';
   }
+  appStore.error = '';
+  appStore.toLogin = false;
 })
 const rules = ref({
   email: [
