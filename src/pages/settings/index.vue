@@ -7,11 +7,22 @@ import {format} from "date-fns";
 
 const settingsData = useSettingData()
 const settingsStore = useSettingStore()
+
+const snackBarText = ref('');
+const snackBar = ref(false);
+
+
 onMounted(async () => {
   await settingsData.getAllSettings()
 })
 const setDate = (field: 'start_date' | 'end_date', event: string) => {
   settingsStore.setting[field] = format(new Date(event), "yyyy-MM-dd");
+}
+
+const saveSettingsComponent = async () => {
+  await settingsData.saveSetting()
+  snackBar.value = true
+  snackBarText.value = "Configuración salvada correctamente"
 }
 
 definePage({
@@ -20,6 +31,9 @@ definePage({
 </script>
 
 <template>
+  <v-snackbar close-delay="300" color="green" absolute location="top center" v-model:model-value="snackBar"
+              :text="snackBarText"></v-snackbar>
+
   <v-container fluid>
     <v-row v-if="Object.keys(settingsStore.setting).length">
       <v-col cols="4">
@@ -71,7 +85,7 @@ definePage({
       </template>
     </v-row>
     <v-row justify="center" no-gutters>
-      <v-btn @click="settingsData.saveSetting" color="success">Guardar</v-btn>
+      <v-btn @click="saveSettingsComponent" color="success">Guardar</v-btn>
     </v-row>
   </v-container>
 </template>

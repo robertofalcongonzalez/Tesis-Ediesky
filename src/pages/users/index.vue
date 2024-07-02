@@ -19,7 +19,6 @@ const headers: Record<string, any>[] = [
   {key: 'first_name', title: 'Nombre'},
   {key: 'last_name', title: 'Apellidos'},
   {key: 'email', title: 'Correo'},
-  {key: 'phone', title: 'Télefono'},
   // {key: 'actions', title: 'Acciones'},
 ]
 
